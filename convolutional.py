@@ -134,10 +134,10 @@ def main(_):
     test_labels_filename = maybe_download('emnist-byclass-test-labels-idx1-ubyte.gz')
 
     # Extract it into numpy arrays.
-    train_data = extract_data(train_data_filename, 60000)
-    train_labels = extract_labels(train_labels_filename, 60000)
-    test_data = extract_data(test_data_filename, 10000)
-    test_labels = extract_labels(test_labels_filename, 10000)
+    train_data = extract_data(train_data_filename, 697932)
+    train_labels = extract_labels(train_labels_filename, 697932)
+    test_data = extract_data(test_data_filename, 116323)
+    test_labels = extract_labels(test_labels_filename, 116323)
 
     # Generate a validation set.
     validation_data = train_data[:VALIDATION_SIZE, ...]
