@@ -1,9 +1,19 @@
+import gzip
 import numpy as np
 import tensorflow as tf
 from scipy import io as spio
 import matplotlib.pyplot as plt
 
-emnist = spio.loadmat('emnist-byclass')
+emnist = spio.loadmat('datasets/emnist/emnist-byclass')
+
+#must be 3d array (ie. batch of images)
+def flipandrot(array):
+  index = 0
+  for inner_array in array:
+    array[index] = np.fliplr(inner_array)
+    array[index] = np.rot90(inner_array)
+    index += 1
+  return array
 
 # load training data
 x_train = emnist["dataset"][0][0][0][0][0][0]
@@ -26,14 +36,17 @@ x_test = x_test.reshape(x_test.shape[0], 28, 28)
 y_test = emnist["dataset"][0][0][1][0][0][1]
 y_test = y_test.astype(np.int32)
 
+#x_norm  = (x_train - (255 / 2.0)) / 255
+#normalize
 x_train /= 255
 x_test /= 255
 
-img = x_train[300]
-plt.imshow(img, cmap='gray')
-plt.show()
+#flip and rotate 90 degrees
+x_train = flipandrot(x_train)
+x_test = flipandrot(x_test)
+
 # Specify feature
-feature_columns = [tf.feature_column.numeric_column("x", shape=[28, 28])]
+feature_columns = [tf.feature_column.numeric_column("x", shape=[28,28])]
 
 # Build 2 layer DNN classifier
 classifier = tf.estimator.DNNClassifier(
@@ -50,11 +63,13 @@ train_input_fn = tf.estimator.inputs.numpy_input_fn(
     x={"x": x_train},
     y=y_train,
     num_epochs=None,
-    batch_size=50,
+    batch_size=128,
     shuffle=True
 )
 
-classifier.train(input_fn=train_input_fn, steps=10000)
+print('Training...')
+classifier.train(input_fn=train_input_fn, steps=100000)
+print('Done')
 
 # Define the test inputs
 test_input_fn = tf.estimator.inputs.numpy_input_fn(
@@ -68,13 +83,14 @@ test_input_fn = tf.estimator.inputs.numpy_input_fn(
 accuracy_score = classifier.evaluate(input_fn=test_input_fn)["accuracy"]
 print("\nTest Accuracy: {0:f}%\n".format(accuracy_score*100))
 
-
-input_fn = tf.estimator.export.build_raw_serving_input_receiver_fn({
-        'x': tf.placeholder(tf.float32, [28, 28]),
-    })
+ft = {"x": tf.placeholder(tf.float32, shape=[None,28,28])}
+rawfn = tf.estimator.export.build_raw_serving_input_receiver_fn(ft)
 
 export_dir_base = './tmp/saved_model'
-classifier.export_savedmodel(export_dir_base, input_fn)
+modeldir = classifier.export_savedmodel(export_dir_base, rawfn)
+
+
+print(modeldir)
 
 
 

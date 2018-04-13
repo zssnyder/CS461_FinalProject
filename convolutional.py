@@ -33,14 +33,15 @@ import numpy
 from six.moves import urllib
 from six.moves import xrange  # pylint: disable=redefined-builtin
 import tensorflow as tf
+import matplotlib.pyplot as plt
 
 # CVDF mirror of http://yann.lecun.com/exdb/mnist/
 SOURCE_URL = 'https://storage.googleapis.com/cvdf-datasets/mnist/'
-WORK_DIRECTORY = 'data'
+WORK_DIRECTORY = '/datasets/mnist'
 IMAGE_SIZE = 28
 NUM_CHANNELS = 1
 PIXEL_DEPTH = 255
-NUM_LABELS = 62 
+NUM_LABELS = 10 
 VALIDATION_SIZE = 5000  # Size of the validation set.
 SEED = None  # Set to None for random seed.
 BATCH_SIZE = 20 #64
@@ -128,16 +129,19 @@ def main(_):
     num_epochs = 1
   else:
     # Get the data.
-    train_data_filename = maybe_download('emnist-byclass-train-images-idx3-ubyte.gz')
-    train_labels_filename = maybe_download('emnist-byclass-train-labels-idx1-ubyte.gz')
-    test_data_filename = maybe_download('emnist-byclass-test-images-idx3-ubyte.gz')
-    test_labels_filename = maybe_download('emnist-byclass-test-labels-idx1-ubyte.gz')
+    train_data_filename = maybe_download('train-images-idx3-ubyte.gz')
+    train_labels_filename = maybe_download('train-labels-idx1-ubyte.gz')
+    test_data_filename = maybe_download('t10k-images-idx3-ubyte.gz')
+    test_labels_filename = maybe_download('t10k-labels-idx1-ubyte.gz')
 
     # Extract it into numpy arrays.
-    train_data = extract_data(train_data_filename, 697932)
-    train_labels = extract_labels(train_labels_filename, 697932)
-    test_data = extract_data(test_data_filename, 116323)
-    test_labels = extract_labels(test_labels_filename, 116323)
+    train_data = extract_data(train_data_filename, 60000)
+    testimg = train_data[0,:,:,0]
+    plt.imshow(testimg, cmap='gray')
+    plt.show()
+    train_labels = extract_labels(train_labels_filename, 60000)
+    test_data = extract_data(test_data_filename, 10000)
+    test_labels = extract_labels(test_labels_filename, 10000)
 
     # Generate a validation set.
     validation_data = train_data[:VALIDATION_SIZE, ...]
