@@ -1,5 +1,4 @@
 from tensorflow.contrib import predictor
-import matplotlib.pyplot as plt
 import tensorflow as tf
 import numpy as np
 import imageio
@@ -28,6 +27,6 @@ def get_predictions(image, modeldir):
     predictions = predict_fn({"x": image})
     return predictions
 
-img = prep_img('Images/four.png')
+img = prep_img('Images/z.png')
 pred = get_predictions(img,'./tmp/saved_model/1523659560')
 print(pred["class_ids"])
