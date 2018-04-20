@@ -1,12 +1,27 @@
 <html>
   <head>
     <title>Canvas Test</title>
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
     <body>
-      <canvas id="myCanvas" style="border: 1px solid #ccc" width="490" height="220"></canvas>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+
+      <!-- 560x560 to prevent distortion when we resize to 28x28 -->
+      <div class="row">
+      <canvas id="myCanvas" style="border: 1px solid #ccc" width="560" height="560"></canvas>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-12 text-center">
+      <button type="sumbit" class="btn btn-success">Predict</button>
+    </div>
+    </div>
       <script>
-	var el = document.getElementById('myCanvas');
-var ctx = el.getContext('2d');
-var isDrawing;
+        var el = document.getElementById('myCanvas');
+        var ctx = el.getContext('2d');
+        var isDrawing;
 
 el.onmousedown = function(e) {
   isDrawing = true;
