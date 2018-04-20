@@ -9,7 +9,7 @@
         <script src="js/bootstrap.min.js"></script>
 
       <!-- 560x560 to prevent distortion when we resize to 28x28 -->
-      <div class="row">
+      <div class="container">
       <canvas id="myCanvas" style="border: 1px solid #ccc" width="560" height="560"></canvas>
     </div>
 
@@ -20,6 +20,7 @@
     </div>
       <script>
         var el = document.getElementById('myCanvas');
+        var canvasRect = el.getBoundingClientRect();
         var ctx = el.getContext('2d');
         var isDrawing;
 
@@ -27,11 +28,11 @@ el.onmousedown = function(e) {
   isDrawing = true;
   ctx.lineWidth = 10;
   ctx.lineJoin = ctx.lineCap = 'round';
-  ctx.moveTo(e.clientX, e.clientY);
+  ctx.moveTo(e.pageX - canvasRect.left, e.pageY - canvasRect.y);
 };
 el.onmousemove = function(e) {
   if (isDrawing) {
-    ctx.lineTo(e.clientX, e.clientY);
+    ctx.lineTo(e.pageX - canvasRect.left, e.pageY - canvasRect.y);
     ctx.stroke();
   }
 };
