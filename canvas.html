@@ -1,45 +1,30 @@
 <html>
-  <head>
-    <title>Canvas Test</title>
-    <!-- Bootstrap -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
-    <body>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-        <script src="js/bootstrap.min.js"></script>
 
-      <!-- 560x560 to prevent distortion when we resize to 28x28 -->
-      <div class="container">
+<head>
+  <title>Canvas Test</title>
+  <!-- Bootstrap -->
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <!-- site specific stylesheet -->
+  <link href="css/style.css" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+
+  <body>
+    <!-- 560x560 to prevent distortion when we resize to 28x28 -->
+    <div>
       <canvas id="myCanvas" style="border: 1px solid #ccc" width="560" height="560"></canvas>
     </div>
 
     <div class="row">
       <div class="col-sm-12 text-center">
-      <button type="sumbit" class="btn btn-success">Predict</button>
-    </div>
-    </div>
-      <script>
-        var el = document.getElementById('myCanvas');
-        var canvasRect = el.getBoundingClientRect();
-        var ctx = el.getContext('2d');
-        var isDrawing;
+        <button onclick=""  type="sumbit" class="btn btn-success">Predict</button>
+        <a id="dl" download="Canvas.png" href="#">Download Canvas</a>
 
-el.onmousedown = function(e) {
-  isDrawing = true;
-  ctx.lineWidth = 10;
-  ctx.lineJoin = ctx.lineCap = 'round';
-  ctx.moveTo(e.pageX - canvasRect.left, e.pageY - canvasRect.y);
-};
-el.onmousemove = function(e) {
-  if (isDrawing) {
-    ctx.lineTo(e.pageX - canvasRect.left, e.pageY - canvasRect.y);
-    ctx.stroke();
-  }
-};
-el.onmouseup = function() {
-  isDrawing = false;
-};
-	</script>
-    </body>
-  </head>
+      </div>
+    </div>
+    <!-- I guess you have to link js AFTER the HTML elements it references-->
+    <script src="js/site.js"></script>
+  </body>
+</head>
+
 </html>
